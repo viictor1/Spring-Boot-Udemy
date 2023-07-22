@@ -1,6 +1,6 @@
 package br.com.erudio.restwithspringbootandjavaerudio.controller;
 
-import br.com.erudio.restwithspringbootandjavaerudio.model.PersonDto;
+import br.com.erudio.restwithspringbootandjavaerudio.dto.PersonDto;
 import br.com.erudio.restwithspringbootandjavaerudio.service.PersonService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
