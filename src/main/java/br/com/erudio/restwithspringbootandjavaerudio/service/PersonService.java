@@ -2,7 +2,7 @@ package br.com.erudio.restwithspringbootandjavaerudio.service;
 
 import br.com.erudio.restwithspringbootandjavaerudio.dto.PersonDto;
 import br.com.erudio.restwithspringbootandjavaerudio.exception.ResourceNotFoundException;
-import br.com.erudio.restwithspringbootandjavaerudio.mapper.ModelMapper;
+import br.com.erudio.restwithspringbootandjavaerudio.mapper.Mapper;
 import br.com.erudio.restwithspringbootandjavaerudio.model.Person;
 import br.com.erudio.restwithspringbootandjavaerudio.repository.PersonRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,17 +21,17 @@ public class PersonService {
     public PersonDto findById(Long id){
         Person person = personRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Records not found for this ID"));
-        return ModelMapper.parseObject(person, PersonDto.class);
+        return Mapper.parseObject(person, PersonDto.class);
 
     }
     public List<PersonDto> findAll(){
-        return ModelMapper.parseListObjects(personRepository.findAll(), PersonDto.class);
+        return Mapper.parseListObjects(personRepository.findAll(), PersonDto.class);
     }
 
     public PersonDto create(PersonDto person){
-        var entity = ModelMapper.parseObject(person, Person.class);
+        var entity = Mapper.parseObject(person, Person.class);
         personRepository.save(entity);
-        return ModelMapper.parseObject(entity, PersonDto.class);
+        return Mapper.parseObject(entity, PersonDto.class);
     }
 
     public PersonDto update(PersonDto person){
@@ -43,7 +43,7 @@ public class PersonService {
         entity.setAddress(person.getAddress());
         entity.setGender(person.getGender());
 
-        return ModelMapper.parseObject(personRepository.save(entity), PersonDto.class);
+        return Mapper.parseObject(personRepository.save(entity), PersonDto.class);
     }
 
     public void delete(Long id){

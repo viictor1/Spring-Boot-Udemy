@@ -6,7 +6,7 @@ import java.util.List;
 
 import br.com.erudio.restwithspringbootandjavaerudio.UnitTests.mapper.mocks.MockPerson;
 import br.com.erudio.restwithspringbootandjavaerudio.dto.PersonDto;
-import br.com.erudio.restwithspringbootandjavaerudio.mapper.ModelMapper;
+import br.com.erudio.restwithspringbootandjavaerudio.mapper.Mapper;
 import br.com.erudio.restwithspringbootandjavaerudio.model.Person;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -23,7 +23,7 @@ public class ModelConverterTest {
 
     @Test
     public void parseEntityToVOTest() {
-        PersonDto output = ModelMapper.parseObject(inputObject.mockEntity(), PersonDto.class);
+        PersonDto output = Mapper.parseObject(inputObject.mockEntity(), PersonDto.class);
         assertEquals(Long.valueOf(0L), output.getId());
         assertEquals("First Name Test0", output.getFirstName());
         assertEquals("Last Name Test0", output.getLastName());
@@ -33,7 +33,7 @@ public class ModelConverterTest {
 
     @Test
     public void parseEntityListToVOListTest() {
-        List<PersonDto> outputList = ModelMapper.parseListObjects(inputObject.mockEntityList(), PersonDto.class);
+        List<PersonDto> outputList = Mapper.parseListObjects(inputObject.mockEntityList(), PersonDto.class);
         PersonDto outputZero = outputList.get(0);
 
         assertEquals(Long.valueOf(0L), outputZero.getId());
@@ -61,7 +61,7 @@ public class ModelConverterTest {
 
     @Test
     public void parseVOToEntityTest() {
-        Person output = ModelMapper.parseObject(inputObject.mockVO(), Person.class);
+        Person output = Mapper.parseObject(inputObject.mockVO(), Person.class);
         assertEquals(Long.valueOf(0L), output.getId());
         assertEquals("First Name Test0", output.getFirstName());
         assertEquals("Last Name Test0", output.getLastName());
@@ -71,7 +71,7 @@ public class ModelConverterTest {
 
     @Test
     public void parserVOListToEntityListTest() {
-        List<Person> outputList = ModelMapper.parseListObjects(inputObject.mockVOList(), Person.class);
+        List<Person> outputList = Mapper.parseListObjects(inputObject.mockVOList(), Person.class);
         Person outputZero = outputList.get(0);
 
         assertEquals(Long.valueOf(0L), outputZero.getId());

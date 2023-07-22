@@ -1,11 +1,13 @@
 package br.com.erudio.restwithspringbootandjavaerudio.mapper;
 
+import org.modelmapper.ModelMapper;
+
 import java.util.ArrayList;
 import java.util.List;
 
-public class ModelMapper {
+public class Mapper {
 
-    private static org.modelmapper.ModelMapper mapper = new org.modelmapper.ModelMapper();
+    private static ModelMapper mapper = new ModelMapper();
 
     public static <O,D> D parseObject(O origin, Class<D> destination ){
         return mapper.map(origin, destination);
