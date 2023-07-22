@@ -1,7 +1,9 @@
 package br.com.erudio.restwithspringbootandjavaerudio.service;
 
-import br.com.erudio.restwithspringbootandjavaerudio.exception.ResourceNotFoundException;
 import br.com.erudio.restwithspringbootandjavaerudio.dto.PersonDto;
+import br.com.erudio.restwithspringbootandjavaerudio.exception.ResourceNotFoundException;
+import br.com.erudio.restwithspringbootandjavaerudio.mapper.ModelMapper;
+import br.com.erudio.restwithspringbootandjavaerudio.model.Person;
 import br.com.erudio.restwithspringbootandjavaerudio.repository.PersonRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -17,31 +19,35 @@ public class PersonService {
     private Logger logger = Logger.getLogger(PersonService.class.getName());
 
     public PersonDto findById(Long id){
-        return personRepository.findById(id)
+        Person person = personRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Records not found for this ID"));
+        return ModelMapper.parseObject(person, PersonDto.class);
+
     }
     public List<PersonDto> findAll(){
-        return personRepository.findAll();
+        return ModelMapper.parseListObjects(personRepository.findAll(), PersonDto.class);
     }
 
     public PersonDto create(PersonDto person){
-        return personRepository.save(person);
+        var entity = ModelMapper.parseObject(person, Person.class);
+        personRepository.save(entity);
+        return ModelMapper.parseObject(entity, PersonDto.class);
     }
 
     public PersonDto update(PersonDto person){
-        PersonDto entity = personRepository.findById(person.getId())
+        Person entity = personRepository.findById(person.getId())
                 .orElseThrow(() -> new ResourceNotFoundException("Records not found for this ID"));
 
-        person.setFirstName(person.getFirstName());
-        person.setLastName(person.getLastName());
-        person.setAddress(person.getAddress());
-        person.setGender(person.getGender());
+        entity.setFirstName(person.getFirstName());
+        entity.setLastName(person.getLastName());
+        entity.setAddress(person.getAddress());
+        entity.setGender(person.getGender());
 
-        return personRepository.save(person);
+        return ModelMapper.parseObject(personRepository.save(entity), PersonDto.class);
     }
 
     public void delete(Long id){
-        PersonDto entity = personRepository.findById(id)
+        Person entity = personRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Records not found for this ID"));
 
         personRepository.delete(entity);
