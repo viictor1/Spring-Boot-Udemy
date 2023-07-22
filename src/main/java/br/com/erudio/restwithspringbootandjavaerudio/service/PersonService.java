@@ -1,8 +1,10 @@
 package br.com.erudio.restwithspringbootandjavaerudio.service;
 
 import br.com.erudio.restwithspringbootandjavaerudio.dto.PersonDto;
+import br.com.erudio.restwithspringbootandjavaerudio.dto.v2.dto.PersonDtoV2;
 import br.com.erudio.restwithspringbootandjavaerudio.exception.ResourceNotFoundException;
 import br.com.erudio.restwithspringbootandjavaerudio.mapper.Mapper;
+import br.com.erudio.restwithspringbootandjavaerudio.mapper.custom.PersonMapper;
 import br.com.erudio.restwithspringbootandjavaerudio.model.Person;
 import br.com.erudio.restwithspringbootandjavaerudio.repository.PersonRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +17,9 @@ import java.util.logging.Logger;
 public class PersonService {
     @Autowired
     private PersonRepository personRepository;
+
+    @Autowired
+    private PersonMapper personMapper;
 
     private Logger logger = Logger.getLogger(PersonService.class.getName());
 
@@ -32,6 +37,12 @@ public class PersonService {
         var entity = Mapper.parseObject(person, Person.class);
         personRepository.save(entity);
         return Mapper.parseObject(entity, PersonDto.class);
+    }
+
+    public PersonDtoV2 createV2(PersonDtoV2 person){
+        var entity = personMapper.convertDtoV2ToEntity(person);
+        personRepository.save(entity);
+        return personMapper.convertEntityToDtoV2(entity);
     }
 
     public PersonDto update(PersonDto person){
