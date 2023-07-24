@@ -1,5 +1,6 @@
 package br.com.erudio.restwithspringbootandjavaerudio.service;
 
+import br.com.erudio.restwithspringbootandjavaerudio.controller.PersonController;
 import br.com.erudio.restwithspringbootandjavaerudio.dto.PersonDto;
 import br.com.erudio.restwithspringbootandjavaerudio.dto.v2.dto.PersonDtoV2;
 import br.com.erudio.restwithspringbootandjavaerudio.exception.ResourceNotFoundException;
@@ -12,6 +13,9 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.logging.Logger;
+
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 
 @Service
 public class PersonService {
@@ -26,17 +30,27 @@ public class PersonService {
     public PersonDto findById(Long id){
         Person person = personRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Records not found for this ID"));
-        return Mapper.parseObject(person, PersonDto.class);
-
+        PersonDto dto =  Mapper.parseObject(person, PersonDto.class);
+        dto.add(linkTo(methodOn(PersonController.class).findById(id)).withSelfRel());
+        return dto;
     }
+
     public List<PersonDto> findAll(){
-        return Mapper.parseListObjects(personRepository.findAll(), PersonDto.class);
+
+        var persons =  Mapper.parseListObjects(personRepository.findAll(), PersonDto.class);
+        persons
+                .stream()
+                .forEach(p -> p.add(linkTo(methodOn(PersonController.class)
+                        .findById(p.getPersonId())).withSelfRel()));
+        return persons;
     }
 
     public PersonDto create(PersonDto person){
         var entity = Mapper.parseObject(person, Person.class);
-        personRepository.save(entity);
-        return Mapper.parseObject(entity, PersonDto.class);
+        entity = personRepository.save(entity);
+        PersonDto dto =  Mapper.parseObject(entity, PersonDto.class);
+        dto.add(linkTo(methodOn(PersonController.class).findById(dto.getPersonId())).withSelfRel());
+        return dto;
     }
 
     public PersonDtoV2 createV2(PersonDtoV2 person){
@@ -46,7 +60,7 @@ public class PersonService {
     }
 
     public PersonDto update(PersonDto person){
-        Person entity = personRepository.findById(person.getId())
+        Person entity = personRepository.findById(person.getPersonId())
                 .orElseThrow(() -> new ResourceNotFoundException("Records not found for this ID"));
 
         entity.setFirstName(person.getFirstName());
@@ -54,7 +68,9 @@ public class PersonService {
         entity.setAddress(person.getAddress());
         entity.setGender(person.getGender());
 
-        return Mapper.parseObject(personRepository.save(entity), PersonDto.class);
+        PersonDto dto =  Mapper.parseObject(entity, PersonDto.class);
+        dto.add(linkTo(methodOn(PersonController.class).findById(dto.getPersonId())).withSelfRel());
+        return dto;
     }
 
     public void delete(Long id){

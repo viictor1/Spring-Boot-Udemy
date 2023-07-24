@@ -9,8 +9,9 @@ import java.util.Objects;
 @Table(name = "person")
 public class Person implements Serializable {
     @Id
+    @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Long personId;
 
     @Column(name = "first_name", nullable = false, length = 80)
     private String firstName;
@@ -27,12 +28,12 @@ public class Person implements Serializable {
     public Person() {
     }
 
-    public Long getId() {
-        return id;
+    public Long getPersonId() {
+        return personId;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public void setPersonId(Long personId) {
+        this.personId = personId;
     }
 
     public String getFirstName() {
@@ -72,7 +73,7 @@ public class Person implements Serializable {
         if (this == o) return true;
         if (!(o instanceof Person person)) return false;
 
-        if (!Objects.equals(id, person.id)) return false;
+        if (!Objects.equals(personId, person.personId)) return false;
         if (!Objects.equals(firstName, person.firstName)) return false;
         if (!Objects.equals(lastName, person.lastName)) return false;
         if (!Objects.equals(address, person.address)) return false;
@@ -81,7 +82,7 @@ public class Person implements Serializable {
 
     @Override
     public int hashCode() {
-        int result = id != null ? id.hashCode() : 0;
+        int result = personId != null ? personId.hashCode() : 0;
         result = 31 * result + (firstName != null ? firstName.hashCode() : 0);
         result = 31 * result + (lastName != null ? lastName.hashCode() : 0);
         result = 31 * result + (address != null ? address.hashCode() : 0);

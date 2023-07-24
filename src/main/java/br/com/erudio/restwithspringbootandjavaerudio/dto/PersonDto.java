@@ -3,16 +3,20 @@ package br.com.erudio.restwithspringbootandjavaerudio.dto;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+import org.springframework.hateoas.RepresentationModel;
 
 import java.io.Serializable;
 import java.util.Objects;
 
-@JsonPropertyOrder({"id", "address", "first_name", "last_name", "gender"})
-public class PersonDto implements Serializable {
-    private Long id;
-    @JsonProperty("first_name")
+
+@JsonPropertyOrder({"id", "firstName", "lastName", "address", "gender"})
+public class PersonDto extends RepresentationModel<PersonDto> implements Serializable {
+
+    @JsonProperty("id")
+    private Long personId;
+
     private String firstName;
-    @JsonProperty("last_name")
+
     private String lastName;
     private String address;
     private String gender;
@@ -22,12 +26,12 @@ public class PersonDto implements Serializable {
     public PersonDto() {
     }
 
-    public Long getId() {
-        return id;
+    public Long getPersonId() {
+        return personId;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public void setPersonId(Long personId) {
+        this.personId = personId;
     }
 
     public String getFirstName() {
@@ -67,7 +71,7 @@ public class PersonDto implements Serializable {
         if (this == o) return true;
         if (!(o instanceof PersonDto person)) return false;
 
-        if (!Objects.equals(id, person.id)) return false;
+        if (!Objects.equals(personId, person.personId)) return false;
         if (!Objects.equals(firstName, person.firstName)) return false;
         if (!Objects.equals(lastName, person.lastName)) return false;
         if (!Objects.equals(address, person.address)) return false;
@@ -76,7 +80,7 @@ public class PersonDto implements Serializable {
 
     @Override
     public int hashCode() {
-        int result = id != null ? id.hashCode() : 0;
+        int result = personId != null ? personId.hashCode() : 0;
         result = 31 * result + (firstName != null ? firstName.hashCode() : 0);
         result = 31 * result + (lastName != null ? lastName.hashCode() : 0);
         result = 31 * result + (address != null ? address.hashCode() : 0);
