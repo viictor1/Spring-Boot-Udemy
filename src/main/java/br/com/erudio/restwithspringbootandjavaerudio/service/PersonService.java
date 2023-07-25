@@ -3,6 +3,7 @@ package br.com.erudio.restwithspringbootandjavaerudio.service;
 import br.com.erudio.restwithspringbootandjavaerudio.controller.PersonController;
 import br.com.erudio.restwithspringbootandjavaerudio.dto.PersonDto;
 import br.com.erudio.restwithspringbootandjavaerudio.dto.v2.dto.PersonDtoV2;
+import br.com.erudio.restwithspringbootandjavaerudio.exception.RequiredObjectIsNullException;
 import br.com.erudio.restwithspringbootandjavaerudio.exception.ResourceNotFoundException;
 import br.com.erudio.restwithspringbootandjavaerudio.mapper.Mapper;
 import br.com.erudio.restwithspringbootandjavaerudio.mapper.custom.PersonMapper;
@@ -46,6 +47,7 @@ public class PersonService {
     }
 
     public PersonDto create(PersonDto person){
+        if(person == null) throw new RequiredObjectIsNullException();
         var entity = Mapper.parseObject(person, Person.class);
         entity = personRepository.save(entity);
         PersonDto dto =  Mapper.parseObject(entity, PersonDto.class);
@@ -60,6 +62,8 @@ public class PersonService {
     }
 
     public PersonDto update(PersonDto person){
+        if(person == null) throw new RequiredObjectIsNullException();
+
         Person entity = personRepository.findById(person.getPersonId())
                 .orElseThrow(() -> new ResourceNotFoundException("Records not found for this ID"));
 
