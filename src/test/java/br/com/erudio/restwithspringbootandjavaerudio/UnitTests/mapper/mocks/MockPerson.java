@@ -34,7 +34,7 @@ public class MockPerson {
 
     public Person mockEntity(Integer number) {
         Person person = new Person();
-        person.setAddress("Addres Test" + number);
+        person.setAddress("Address Test" + number);
         person.setFirstName("First Name Test" + number);
         person.setGender(((number % 2)==0) ? "Male" : "Female");
         person.setPersonId(number.longValue());
@@ -44,7 +44,7 @@ public class MockPerson {
 
     public PersonDto mockVO(Integer number) {
         PersonDto person = new PersonDto();
-        person.setAddress("Addres Test" + number);
+        person.setAddress("Address Test" + number);
         person.setFirstName("First Name Test" + number);
         person.setGender(((number % 2)==0) ? "Male" : "Female");
         person.setPersonId(number.longValue());
