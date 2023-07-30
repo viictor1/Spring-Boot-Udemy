@@ -63,6 +63,38 @@ class PersonServiceTest {
 
     @Test
     void findAll() {
+        List<Person> personList = input.mockEntityList();
+
+        when(personRepository.findAll()).thenReturn(personList);
+
+        var result = personService.findAll();
+
+        var personOne = result.get(1);
+
+        assertNotNull(result);
+        assertEquals(14, result.size());
+
+        assertTrue(personOne.toString().contains("links: [</api/person/v1/1>;rel=\"self\"]"));
+        assertEquals("First Name Test1", personOne.getFirstName());
+        assertEquals("Last Name Test1", personOne.getLastName());
+        assertEquals("Address Test1", personOne.getAddress());
+        assertEquals("Female", personOne.getGender());
+
+        var personFive = result.get(5);
+
+        assertTrue(personFive.toString().contains("links: [</api/person/v1/5>;rel=\"self\"]"));
+        assertEquals("First Name Test5", personFive.getFirstName());
+        assertEquals("Last Name Test5", personFive.getLastName());
+        assertEquals("Address Test5", personFive.getAddress());
+        assertEquals("Female", personFive.getGender());
+
+        var personTen = result.get(10);
+
+        assertTrue(personTen.toString().contains("links: [</api/person/v1/10>;rel=\"self\"]"));
+        assertEquals("First Name Test10", personTen.getFirstName());
+        assertEquals("Last Name Test10", personTen.getLastName());
+        assertEquals("Address Test10", personTen.getAddress());
+        assertEquals("Male", personTen.getGender());
     }
 
     @Test
@@ -132,37 +164,6 @@ class PersonServiceTest {
 
     @Test
     void delete() {
-        List<Person> personList = input.mockEntityList();
 
-        when(personRepository.findAll()).thenReturn(personList);
-
-        var result = personService.findAll();
-
-        var personOne = result.get(1);
-
-        assertNotNull(result);
-        assertEquals(14, result.size());
-
-        assertTrue(personOne.toString().contains("links: [</api/person/v1/1>;rel=\"self\"]"));
-        assertEquals("First Name Test1", personOne.getFirstName());
-        assertEquals("Last Name Test1", personOne.getLastName());
-        assertEquals("Address Test1", personOne.getAddress());
-        assertEquals("Female", personOne.getGender());
-
-        var personFive = result.get(5);
-
-        assertTrue(personOne.toString().contains("links: [</api/person/v1/1>;rel=\"self\"]"));
-        assertEquals("First Name Test5", personFive.getFirstName());
-        assertEquals("Last Name Test5", personFive.getLastName());
-        assertEquals("Address Test5", personFive.getAddress());
-        assertEquals("Female", personFive.getGender());
-
-        var personTen = result.get(10);
-
-        assertTrue(personOne.toString().contains("links: [</api/person/v1/1>;rel=\"self\"]"));
-        assertEquals("First Name Test10", personTen.getFirstName());
-        assertEquals("Last Name Test10", personTen.getLastName());
-        assertEquals("Address Test10", personTen.getAddress());
-        assertEquals("Male", personTen.getGender());
     }
 }

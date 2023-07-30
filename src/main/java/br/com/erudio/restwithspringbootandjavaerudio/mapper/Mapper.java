@@ -1,9 +1,7 @@
 package br.com.erudio.restwithspringbootandjavaerudio.mapper;
 
-import br.com.erudio.restwithspringbootandjavaerudio.dto.PersonDto;
 import br.com.erudio.restwithspringbootandjavaerudio.model.Person;
 import org.modelmapper.ModelMapper;
-import org.modelmapper.PropertyMap;
 
 import java.util.ArrayList;
 import java.util.List;
